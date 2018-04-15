@@ -12,11 +12,15 @@ Student::Student()
     cout << endl << "ID number: ";
     cin >> idNumber;
 }
-//ostream &operator<<(ostream &os, Student const &student)
-//{
-//    return os << "ID# " << student.idNumber << " - " << student.firstName << ", " << student.lastName;
-//}
-void Student::printStudent()
+ostream& operator << (ostream& os, Student const& student)
 {
-    cout << "ID# " << idNumber << " - " << firstName << ", " << lastName << endl;
+    os << "ID# " << student.idNumber << " - " << student.firstName << ", " << student.lastName;
+	return os;
 }
+
+inline bool operator < (const Student& lhs, const Student& rhs){ return lhs.idNumber < rhs.idNumber;}
+inline bool operator > (const Student& lhs, const Student& rhs){ return rhs < lhs;}
+inline bool operator <= (const Student& lhs, const Student& rhs){return !(lhs > rhs);}
+inline bool operator >= (const Student& lhs, const Student& rhs){return !(lhs < rhs);}
+inline bool operator == (const Student& lhs, const Student& rhs){return lhs.idNumber == rhs.idNumber;}
+inline bool operator != (const Student& lhs, const Student& rhs){return !(lhs == rhs);}

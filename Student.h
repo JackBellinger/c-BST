@@ -1,5 +1,7 @@
 #ifndef STUDENTS_H
 #define STUDENTS_H
+#include <iostream>
+using namespace std;
 
 struct Student
 {
@@ -8,7 +10,11 @@ struct Student
     int idNumber;
     
     Student();
-    void printStudent();
+	bool operator == (const Student);
+	bool operator > (const Student);
+	bool operator < (const Student);
+	
+	friend ostream& operator << (ostream &stream, const Student &student);
 };
 
 #endif
