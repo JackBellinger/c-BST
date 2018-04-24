@@ -14,7 +14,8 @@ public:
 	TNode* right;
 	DT data;
 //public:
-	TNode(DT& = new DT());
+	TNode(DT* = new DT());
+	TNode(DT);
 };
 
 #endif

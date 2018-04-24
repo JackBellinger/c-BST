@@ -19,7 +19,7 @@ BST<DT>::~BST()
 template <class DT>
 TNode<DT>* BST<DT>::createNode()
 {
-	DT data = DT();
+	DT* data = new DT();
 	TNode<DT>* newNode = new TNode<DT>(data);
 	return newNode;
 }
@@ -229,4 +229,5 @@ void BST<DT>::postOrder(TNode<DT>* current)
 		cout << current->data;
 }
 
-
+//class template BST<int>;
+//class template BST<Student>;

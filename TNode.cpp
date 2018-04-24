@@ -3,11 +3,19 @@
 using namespace std;
 
 template <class DT>
+TNode<DT>::TNode(DT* d)
+{
+	parent = NULL;
+	left = NULL;
+	right = NULL;
+	data = *d;
+}
+
+template <class DT>
 TNode<DT>::TNode(DT d)
 {
 	parent = NULL;
 	left = NULL;
 	right = NULL;
-	data = d;
+	data = *d;
 }
-
