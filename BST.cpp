@@ -207,9 +207,9 @@ void BST<DT>::preOrder(TNode<DT>* current)
 	if(current != NULL)
 		cout << current->data;
 	if(current->left != NULL)
-		inOrder(current->left);
+		preOrder(current->left);
 	if(current->right != NULL)
-		inOrder(current->right);
+		preOrder(current->right);
 }
 
 template <class DT>
@@ -222,9 +222,9 @@ template <class DT>
 void BST<DT>::postOrder(TNode<DT>* current)
 {
 	if(current->left != NULL)
-		inOrder(current->left);
+		postOrder(current->left);
 	if(current->right != NULL)
-		inOrder(current->right);
+		postOrder(current->right);
 	if(current != NULL)
 		cout << current->data;
 }
