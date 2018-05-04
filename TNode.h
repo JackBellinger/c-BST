@@ -6,8 +6,7 @@ using namespace std;
 template <class DT>
 class TNode
 {
-//template <class DT>
-//friend class BST;
+
 public:
 	TNode* parent;
 	TNode* left;

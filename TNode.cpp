@@ -19,3 +19,5 @@ TNode<DT>::TNode(DT d)
 	right = NULL;
 	data = *d;
 }
+//class template TNode<int>;
+//class template TNode<Student>;

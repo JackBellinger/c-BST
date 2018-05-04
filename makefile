@@ -1,10 +1,16 @@
-all: BST clean
+all: bst clean
 
-BST: instantiation.cpp BSTEngine.o BST.o Student.o
-	g++ -o BST instantiation.cpp
+bst: BSTEngine.o BST.o Student.o
+	g++ -o bst BST.o Student.o
 
-Lab4.o: BSTEngine.cpp
-	g++ -c BSTEngine.cpp BST.cpp Student.cpp
+BSTEngine.o: BSTEngine.cpp
+	g++ -c BSTEngine.cpp
+
+BST.o: BST.cpp
+	g++ -c BST.cpp
+
+Student.o:
+	g++ -c Student.cpp
 
 clean:
 	rm -rf *o

@@ -12,15 +12,19 @@ Student::Student()
     cout << endl << "ID number: ";
     cin >> idNumber;
 }
+Student::Student(int id)
+{
+	idNumber = id;
+}
 ostream& operator << (ostream& os, Student const& student)
 {
     os << "ID# " << student.idNumber << " - " << student.firstName << ", " << student.lastName;
 	return os;
 }
 
-inline bool operator < (const Student& lhs, const Student& rhs){ return lhs.idNumber < rhs.idNumber;}
-inline bool operator > (const Student& lhs, const Student& rhs){ return rhs < lhs;}
-inline bool operator <= (const Student& lhs, const Student& rhs){return !(lhs > rhs);}
-inline bool operator >= (const Student& lhs, const Student& rhs){return !(lhs < rhs);}
-inline bool operator == (const Student& lhs, const Student& rhs){return lhs.idNumber == rhs.idNumber;}
-inline bool operator != (const Student& lhs, const Student& rhs){return !(lhs == rhs);}
+bool Student::operator < (const Student compare){ return idNumber < compare.idNumber;}
+bool Student::operator > (const Student compare){ return idNumber > compare.idNumber;}
+bool Student::operator <= (const Student compare){return !(idNumber > compare.idNumber);}
+bool Student::operator >= (const Student compare){return !(idNumber < compare.idNumber);}
+bool Student::operator == (const Student compare){return idNumber == compare.idNumber;}
+bool Student::operator != (const Student compare){return !(idNumber == compare.idNumber);}

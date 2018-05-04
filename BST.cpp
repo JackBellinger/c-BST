@@ -1,8 +1,17 @@
-#include "TNode.h"
-//#include "Student.h"
+//#include "TNode.h"
 #include "BST.h"
+#include "Student.h"
 #include <iostream>
 using namespace std;
+
+template <class DT>
+TNode<DT>::TNode(DT* d)
+{
+	parent = NULL;
+	left = NULL;
+	right = NULL;
+	data = *d;
+}
 
 template <class DT>
 BST<DT>::BST()
@@ -23,20 +32,19 @@ TNode<DT>* BST<DT>::createNode()
 	TNode<DT>* newNode = new TNode<DT>(data);
 	return newNode;
 }
-
+template <>
+TNode<int>* BST<int>::createNode()
+{
+	int* data = new int();
+	cout << "What would you like to insert?" << endl;
+	cin >> *data;
+	TNode<int>* newNode = new TNode<int>(data);
+	return newNode;
+}
 template <class DT>
 bool BST<DT>::bstInsert()
-//use this function to insert objects to the tree, so that the TNode constructor constructs the DT
 {
 	return bstInsert(createNode());
-}
-
-template <class DT>
-bool BST<DT>::bstInsert(DT data)
-//use this function for inserting primitives to a tree, because the TNode constructor initializes primitive type data to 0 / "" / NULL
-{
-	TNode<DT>* newNode = new TNode<DT>(data);
-	return bstInsert(newNode);
 }
 
 template <class DT>
@@ -58,6 +66,7 @@ bool BST<DT>::bstInsert(TNode<DT>* newNode)
 				if(current->left == NULL)
 				{
 					current->left = newNode;
+					newNode->parent = current;
 					return true;
 				}else
 					current = current->left;
@@ -67,6 +76,7 @@ bool BST<DT>::bstInsert(TNode<DT>* newNode)
 				if(current->right == NULL)
 				{
 					current->right = newNode;
+					newNode->parent = current;
 					return true;
 				}else
 					current = current->right;
@@ -80,13 +90,81 @@ bool BST<DT>::bstInsert(TNode<DT>* newNode)
 	}
 	return false;//the function should never get to this statement, only if theres an error
 }
-
 template <class DT>
-void BST<DT>::bstDelete(TNode<DT>*)
+void BST<DT>::bstDelete(TNode<DT>* node)
 {
-	
+	TNode<DT>* del = node;
+	TNode<DT>* replace = node;
+	if(node->left == NULL || node->right == NULL)
+		del = node;
+	else
+		del = successor(node);
+	if(del->left != NULL)
+		replace = del->left;
+	else
+		replace = del->right;
+	if(replace != NULL)
+		replace->parent = del->parent;
+	if(del->parent == NULL)
+		root = replace;
+	else if(del == del->parent->left)
+		del->parent->left = replace;
+	else
+		del->parent->right = replace; 
+	if( del != replace)
+	node->data = del->data;
+	delete del;
 }
-
+/*
+template <class DT>
+void BST<DT>::bstDelete(TNode<DT>* node)
+{
+	TNode<DT>* del = node;
+	TNode<DT>* replace = node;
+	if(node->left == NULL && node->right == NULL)
+	{
+		cout << "no children" << endl;
+		del = node;
+		replace = NULL;
+	}
+	else if(node->left == NULL)
+	{
+		del = node;
+		replace = node->right;
+		replace->parent = node->parent;
+		cout << "right child" << endl;
+	}
+	else if(node->right == NULL)
+	{
+		del = node;
+		replace = node->left;
+		replace->parent = node->parent;
+		cout << "left child" << endl;
+	}
+	else
+	{
+		cout << "2 children" << endl;
+		del = successor(node);
+		node->data = del->data;
+		if(del->right != NULL)
+		{
+			replace = del->right;
+			replace->parent = del->parent;
+		}
+	}
+	if(del->parent != NULL)
+	{
+		cout << "changing parent" << endl;
+		if(del == del->parent->left)
+			del->parent->left = replace;
+		if(del == del->parent->right)
+			del->parent->right = replace;
+	}
+	else
+		root = replace;	
+	delete del;
+}
+*/
 template <class DT>
 TNode<DT>* BST<DT>::bstSearch(DT data)
 {
@@ -94,10 +172,13 @@ TNode<DT>* BST<DT>::bstSearch(DT data)
 	while(current != NULL)
 	{
 		if(current->data == data)
+		{
+			//cout << "found" <<endl;
 			return current;
-		if(current->data < data && current->left != NULL)
+		}
+		if(data < current->data && current->left != NULL)
 			current = current->left;
-		if(current->data > data && current->right != NULL)
+		if(data > current->data && current->right != NULL)
 			current = current->right;
 	}
 	return NULL;//if the loop exits without returning that means the data it's 	looking for isn't in the tree
@@ -187,12 +268,15 @@ void BST<DT>::inOrder()
 template <class DT>
 void BST<DT>::inOrder(TNode<DT>* current)
 {
-	if(current->left != NULL)
-		inOrder(current->left);
 	if(current != NULL)
-		cout << current->data;
-	if(current->right != NULL)
-		inOrder(current->right);
+	{
+		if(current->left != NULL)
+			inOrder(current->left);
+		if(current != NULL)
+			cout << current->data << ", ";
+		if(current->right != NULL)
+			inOrder(current->right);
+	}
 }
 
 template <class DT>
@@ -205,11 +289,14 @@ template <class DT>
 void BST<DT>::preOrder(TNode<DT>* current)
 {
 	if(current != NULL)
-		cout << current->data;
-	if(current->left != NULL)
-		preOrder(current->left);
-	if(current->right != NULL)
-		preOrder(current->right);
+	{
+		if(current != NULL)
+			cout << current->data << ", ";
+		if(current->left != NULL)
+			preOrder(current->left);
+		if(current->right != NULL)
+			preOrder(current->right);
+	}
 }
 
 template <class DT>
@@ -221,12 +308,15 @@ void BST<DT>::postOrder()
 template <class DT>
 void BST<DT>::postOrder(TNode<DT>* current)
 {
-	if(current->left != NULL)
-		postOrder(current->left);
-	if(current->right != NULL)
-		postOrder(current->right);
 	if(current != NULL)
-		cout << current->data;
+	{
+		if(current->left != NULL)
+			postOrder(current->left);
+		if(current->right != NULL)
+			postOrder(current->right);
+		if(current != NULL)
+			cout << current->data << ", ";
+	}
 }
 
 //class template BST<int>;

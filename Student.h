@@ -10,9 +10,13 @@ struct Student
     int idNumber;
     
     Student();
+	Student(int);
 	bool operator == (const Student);
+	bool operator != (const Student);
 	bool operator > (const Student);
+	bool operator >= (const Student);
 	bool operator < (const Student);
+	bool operator <= (const Student);
 	
 	friend ostream& operator << (ostream &stream, const Student &student);
 };

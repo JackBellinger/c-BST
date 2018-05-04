@@ -1,7 +1,22 @@
 #ifndef BST_H
 #define BST_H
-#include "TNode.h"
+//#include "TNode.h"
+#include <iostream>
 using namespace std;
+
+template <class DT>
+class TNode
+{
+
+public:
+	TNode* parent;
+	TNode* left;
+	TNode* right;
+	DT data;
+//public:
+	TNode(DT* = new DT());
+	TNode(DT);
+};
 
 template <class DT>
 class BST
