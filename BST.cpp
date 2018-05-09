@@ -41,6 +41,14 @@ TNode<int>* BST<int>::createNode()
 	TNode<int>* newNode = new TNode<int>(data);
 	return newNode;
 }
+template <>
+TNode<Student>* BST<Student>::createNode()
+{
+	Student* data = new Student();
+	data->inputData();
+	TNode<Student>* newNode = new TNode<Student>(data);
+	return newNode;
+}
 template <class DT>
 bool BST<DT>::bstInsert()
 {
@@ -49,7 +57,7 @@ bool BST<DT>::bstInsert()
 
 template <class DT>
 bool BST<DT>::bstInsert(TNode<DT>* newNode)
-//returns true if the node was added successfully, falsse if it couldn't add it
+//returns true if the node was added successfully, false if it couldn't add it
 {
 	if(root == NULL)
 	{
@@ -93,78 +101,34 @@ bool BST<DT>::bstInsert(TNode<DT>* newNode)
 template <class DT>
 void BST<DT>::bstDelete(TNode<DT>* node)
 {
-	TNode<DT>* del = node;
-	TNode<DT>* replace = node;
-	if(node->left == NULL || node->right == NULL)
-		del = node;
-	else
-		del = successor(node);
-	if(del->left != NULL)
-		replace = del->left;
-	else
-		replace = del->right;
-	if(replace != NULL)
-		replace->parent = del->parent;
-	if(del->parent == NULL)
-		root = replace;
-	else if(del == del->parent->left)
-		del->parent->left = replace;
-	else
-		del->parent->right = replace; 
-	if( del != replace)
-	node->data = del->data;
-	delete del;
-}
-/*
-template <class DT>
-void BST<DT>::bstDelete(TNode<DT>* node)
-{
-	TNode<DT>* del = node;
-	TNode<DT>* replace = node;
-	if(node->left == NULL && node->right == NULL)
-	{
-		cout << "no children" << endl;
-		del = node;
-		replace = NULL;
-	}
-	else if(node->left == NULL)
-	{
-		del = node;
-		replace = node->right;
-		replace->parent = node->parent;
-		cout << "right child" << endl;
-	}
-	else if(node->right == NULL)
-	{
-		del = node;
-		replace = node->left;
-		replace->parent = node->parent;
-		cout << "left child" << endl;
-	}
+	if(node == NULL)
+		cout << "Couldn't delete" << endl;
 	else
 	{
-		cout << "2 children" << endl;
-		del = successor(node);
-		node->data = del->data;
-		if(del->right != NULL)
-		{
+		TNode<DT>* del = node;
+		TNode<DT>* replace = node;
+		if(node->left == NULL || node->right == NULL)
+			del = node;
+		else
+			del = successor(node);
+		if(del->left != NULL)
+			replace = del->left;
+		else
 			replace = del->right;
+		if(replace != NULL)
 			replace->parent = del->parent;
-		}
-	}
-	if(del->parent != NULL)
-	{
-		cout << "changing parent" << endl;
-		if(del == del->parent->left)
+		if(del->parent == NULL)
+			root = replace;
+		else if(del == del->parent->left)
 			del->parent->left = replace;
-		if(del == del->parent->right)
-			del->parent->right = replace;
+		else
+			del->parent->right = replace; 
+		if( del != replace)
+		node->data = del->data;
+		delete del;
 	}
-	else
-		root = replace;	
-	delete del;
 }
-*/
+
 template <class DT>
 TNode<DT>* BST<DT>::bstSearch(DT data)
 {
@@ -176,11 +140,12 @@ TNode<DT>* BST<DT>::bstSearch(DT data)
 			//cout << "found" <<endl;
 			return current;
 		}
-		if(data < current->data && current->left != NULL)
+		if(data < current->data)// && current->left != NULL)
 			current = current->left;
-		if(data > current->data && current->right != NULL)
+		else if(data > current->data)// && current->right != NULL)
 			current = current->right;
 	}
+	cout << "node not found" << endl;
 	return NULL;//if the loop exits without returning that means the data it's 	looking for isn't in the tree
 }
 

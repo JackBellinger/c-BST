@@ -1,5 +1,5 @@
-#ifndef STUDENTS_H
-#define STUDENTS_H
+#ifndef STUDENT_H
+#define STUDENT_H
 #include <iostream>
 using namespace std;
 
@@ -11,6 +11,7 @@ struct Student
     
     Student();
 	Student(int);
+	void inputData();
 	bool operator == (const Student);
 	bool operator != (const Student);
 	bool operator > (const Student);
