@@ -85,7 +85,7 @@ bool BST<DT>::bstInsert(TNode<DT>* newNode)
 			prev = current;
 			if(newNode->data <= current->data)
 				current = current->left;
-			if(newNode->data > current->data)
+			else if(newNode->data > current->data)
 				current = current->right;
 		}//end while
 		if(newNode->data <= prev->data)
@@ -165,12 +165,12 @@ void BST<DT>::cleanNodes()
 template <class DT>
 void BST<DT>::cleanNodes(TNode<DT>* x)
 {
-	if(x->left != NULL)
+	if(x != NULL)
+	{
 		cleanNodes(x->left);
-	if(x->right != NULL)
 		cleanNodes(x->right);
-	if(x->right == NULL && x->left == NULL)
 		delete x;
+	}
 }
 
 template <class DT>

@@ -1,10 +1,14 @@
 #include "BST.h"
-#include "../c-Heap/Heap.h"
+#include "Heap.h"
 #include <iostream>
 #include <stdlib.h>
 #include <chrono>
 #include <cstddef>
+#include <cmath>
+#include "matplotlibcpp.h"
+
 using namespace std;
+namespace plt = matplotlibcpp;
 
 void generateForwardSorted(int* array, double length)
 {
@@ -146,8 +150,7 @@ int lab7()
 
 	string opNames[3] = {"Insertion", "Searching", "Deletion"};
 
-	double opTimes[3][10];
-
+	static double opTimes[4][10];
 	int numSizes = 0;
 	int numSamples = 10;
 	for(int SIZE = 1000; SIZE <= 10000; SIZE += 1000)
@@ -166,19 +169,47 @@ int lab7()
 					opTimes[op][numSizes] += time;
 				}
 			tree->cleanNodes();
+			delete tree;
 		}//samples loop
 
 		for(int op = 0; op < 3; op++)
+		{
 			opTimes[op][numSizes] = opTimes[op][numSizes] / numSamples;
+			//cout << "Average time to 
+		}
 		numSizes++;
 	}//size loop
-
+	double c1 = 0.00001;
+	double nlogn[10];
+	double c2 = 0.00000012;
+	double n2[10];
+	for(int i = 0; i < 10; i++)
+	{
+		nlogn[i] = c1 * opTimes[3][i] * log(opTimes[3][i]);
+		n2[i] = c2 * Pow(optimes[3][i], 2);
+	}
 	cout << "sizes: "; printArray(opTimes[3], 10);
 	for(int i = 0; i < 3; i++)
 	{
+		for(int j = 0; j < numSizes; j++)
+		{
+			
+		}
 		cout << opNames[i] << ":";
 		printArray(opTimes[i], 10);
 	}
+	
+	plt::figure_size(1200, 780);
+	plt::plot("nlog(n)", opTimes[3], nlogn);
+	plt::plot("n^2", opTimes[3], n2);
+	
+	for(int i = 0; i < 3; i++)
+		plt::plot(opNames[i], opTimes[i]);
+
+	plt::xlim(0, 10000);
+	plt::title("BST Operations Timing");
+	plt::legend();
+	plt::save("./plot.png");
 	return 1;
 }
 int main()
