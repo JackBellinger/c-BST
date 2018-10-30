@@ -33,6 +33,14 @@ void generateRandomSorted(int* array, double length)
 	Heap<int> heap(length);
 	heap.heapSortRandomizer(array, length);
 }
+void generateBSTSorted(int* array, double length)
+{
+	BST<int> tree();
+	for(int i = 0; i < length; i++)
+	{
+		//tree.insert(
+	}
+}
 void printArray(double* array, double length)
 {
 	for(int i = 0; i < length; i++)
@@ -47,6 +55,12 @@ void printArray(int* array, double length)
 	{
 		cout << array[i] << " ";
 	}
+	cout << endl;
+}
+void printVector(vector<double> vector)
+{
+	for(double d : vector)
+		cout << d << " ";
 	cout << endl;
 }
 bool validateAscendingSort(int* array, double length)
@@ -150,23 +164,36 @@ int lab7()
 
 	string opNames[3] = {"Insertion", "Searching", "Deletion"};
 
-	static double opTimes[4][10];
-	int numSizes = 0;
+	vector<vector<double>> opTimesWorst(3, vector<double>(10, 0));
+	vector<vector<double>> opTimesAvg(3, vector<double>(10, 0));
+	vector<double> sizes(10, 0);
+	cout << "size: " <<sizes[0] << endl;
+	int numSizes = 0;//counter not a constant
 	int numSamples = 10;
+
+	void(*generators[3])(int*, double);
+	generators[0] = generateForwardSorted;
+	generators[1] = generateRandomSorted;
+	//generators[2] = generateBSTSorted;
+
+	for(int g = 0; g < 2; g++)//generators = best / worst case loop
 	for(int SIZE = 1000; SIZE <= 10000; SIZE += 1000)
 	{
 		
-		opTimes[3][numSizes] = SIZE;
+		sizes[numSizes] = (double)SIZE;
 		for(int x = 0; x < numSamples; x++)
 		{
 			BST<int>* tree = new BST<int>();
 			int elements[SIZE];
-			generateRandomSorted(elements, SIZE);
+			generators[g](elements, SIZE);
 			for(int op = 0; op < 3; op++)
 				for(int i = 0; i < SIZE; i++)
 				{
 					double time = timeBST(tree, op, elements[i]);
-					opTimes[op][numSizes] += time;
+					if(g == 0)
+						opTimesWorst[op][numSizes] += time;
+					if(g == 1)
+						opTimesAvg[op][numSizes] += time;
 				}
 			tree->cleanNodes();
 			delete tree;
@@ -174,38 +201,49 @@ int lab7()
 
 		for(int op = 0; op < 3; op++)
 		{
-			opTimes[op][numSizes] = opTimes[op][numSizes] / numSamples;
+			if(g == 0)
+				opTimesWorst[op][numSizes] = opTimesWorst[op][numSizes] / numSamples;
+			if(g == 1)
+				opTimesAvg[op][numSizes] = opTimesAvg[op][numSizes] / numSamples;
 			//cout << "Average time to 
 		}
 		numSizes++;
 	}//size loop
 	double c1 = 0.00001;
-	double nlogn[10];
+	vector<double> nlogn(10, 0);
+
 	double c2 = 0.00000012;
-	double n2[10];
+	vector<double> n2(10, 0);
+
 	for(int i = 0; i < 10; i++)
 	{
-		nlogn[i] = c1 * opTimes[3][i] * log(opTimes[3][i]);
-		n2[i] = c2 * Pow(optimes[3][i], 2);
+		nlogn[i] = c1 * sizes[i] * log(sizes[i]);
+		n2[i] = c2 * pow(sizes[i], 2);
 	}
-	cout << "sizes: "; printArray(opTimes[3], 10);
+	cout << "sizes: "; printVector(sizes);
 	for(int i = 0; i < 3; i++)
 	{
 		for(int j = 0; j < numSizes; j++)
 		{
 			
 		}
-		cout << opNames[i] << ":";
-		printArray(opTimes[i], 10);
+		cout << "Worst Cases:\n" << opNames[i] << ": ";
+		printVector(opTimesWorst[i]);
+		
+		cout << "Best Cases:\n" << opNames[i] << ": ";
+		printVector(opTimesAvg[i]);
+
 	}
 	
 	plt::figure_size(1200, 780);
-	plt::plot("nlog(n)", opTimes[3], nlogn);
-	plt::plot("n^2", opTimes[3], n2);
+	plt::named_plot("nlog(n)", sizes, nlogn);
+	plt::named_plot("n^2", sizes, n2);
 	
 	for(int i = 0; i < 3; i++)
-		plt::plot(opNames[i], opTimes[i]);
-
+	{
+		plt::named_plot("Worst Case " + opNames[i], sizes, opTimesWorst[i]);
+		plt::named_plot("Average Case " + opNames[i], sizes, opTimesAvg[i]);
+	}
 	plt::xlim(0, 10000);
 	plt::title("BST Operations Timing");
 	plt::legend();

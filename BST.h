@@ -43,6 +43,8 @@ private:
 public:
 	BST();
 	~BST();
+	
+	DT* bstToArray(DT*, int, TNode<DT>*);
 
 	void inOrder();
 	void inOrder(TNode<DT>*);

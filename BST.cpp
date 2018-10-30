@@ -4,7 +4,7 @@
 #include <iostream>
 using namespace std;
 
-template <class DT>
+	template <class DT>
 TNode<DT>::TNode(DT* d)
 {
 	parent = NULL;
@@ -12,7 +12,7 @@ TNode<DT>::TNode(DT* d)
 	right = NULL;
 	data = *d;
 }
-template <class DT>
+	template <class DT>
 TNode<DT>::TNode(DT d)
 {
 	parent = NULL;
@@ -20,26 +20,26 @@ TNode<DT>::TNode(DT d)
 	right = NULL;
 	data = d;
 }
-template <class DT>
+	template <class DT>
 BST<DT>::BST()
 {
 	root = NULL;
 }
 
-template <class DT>
+	template <class DT>
 BST<DT>::~BST()
 {
 	cleanNodes();
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::createNode()
 {
 	DT* data = new DT();
 	TNode<DT>* newNode = new TNode<DT>(data);
 	return newNode;
 }
-template <>
+	template <>
 TNode<int>* BST<int>::createNode()
 {
 	int* data = new int();
@@ -48,7 +48,7 @@ TNode<int>* BST<int>::createNode()
 	TNode<int>* newNode = new TNode<int>(data);
 	return newNode;
 }
-template <>
+	template <>
 TNode<Student>* BST<Student>::createNode()
 {
 	Student* data = new Student();
@@ -56,20 +56,20 @@ TNode<Student>* BST<Student>::createNode()
 	TNode<Student>* newNode = new TNode<Student>(data);
 	return newNode;
 }
-template <class DT>
+	template <class DT>
 bool BST<DT>::bstInsert()
 {
 	return bstInsert(createNode());
 }
-template <class DT>
+	template <class DT>
 bool BST<DT>::bstInsert(DT data)
 {
 	TNode<DT>* node = new TNode<DT>(data);
 	return bstInsert(node);
 }
-template <class DT>
+	template <class DT>
 bool BST<DT>::bstInsert(TNode<DT>* newNode)
-//returns true if the node was added successfully, false if it couldn't add it
+	//returns true if the node was added successfully, false if it couldn't add it
 {
 	if(root == NULL)
 	{
@@ -96,12 +96,12 @@ bool BST<DT>::bstInsert(TNode<DT>* newNode)
 	}
 	return false;//the function should never get to this statement, only if theres an error
 }
-template <class DT>
+	template <class DT>
 void BST<DT>::bstDelete(DT data)
 {
 	bstDelete(bstSearch(data));
 }
-template <class DT>
+	template <class DT>
 void BST<DT>::bstDelete(TNode<DT>* node)
 {
 	if(node == NULL)
@@ -128,7 +128,7 @@ void BST<DT>::bstDelete(TNode<DT>* node)
 		else
 			del->parent->right = replace; 
 		//end TRANSPLANT
-		
+
 		//if the node to be deleted is a leaf del will = replace
 		if( del != replace)
 			node->data = del->data;
@@ -136,7 +136,7 @@ void BST<DT>::bstDelete(TNode<DT>* node)
 	}
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::bstSearch(DT data)
 {
 	TNode<DT>* current = root;
@@ -156,13 +156,13 @@ TNode<DT>* BST<DT>::bstSearch(DT data)
 	return NULL;//if the loop exits without returning that means the data it's 	looking for isn't in the tree
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::cleanNodes()
 {
 	cleanNodes(root);
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::cleanNodes(TNode<DT>* x)
 {
 	if(x != NULL)
@@ -173,13 +173,13 @@ void BST<DT>::cleanNodes(TNode<DT>* x)
 	}
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::max()
 {
 	max(root);
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::max(TNode<DT>* max)
 {
 	if(max != NULL)
@@ -190,13 +190,13 @@ TNode<DT>* BST<DT>::max(TNode<DT>* max)
 	return max;
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::min()
 {
 	min(root);
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::min(TNode<DT>* min)
 {
 	if(min != NULL)	
@@ -207,87 +207,89 @@ TNode<DT>* BST<DT>::min(TNode<DT>* min)
 	return min;
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::successor()
 {
 	successor(root);
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::successor(TNode<DT>* current)
 {
 	return min(current->right);
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::predecessor()
 {
 	predecessor(root);
 }
 
-template <class DT>
+	template <class DT>
 TNode<DT>* BST<DT>::predecessor(TNode<DT>* current)
 {
 	return max(current->left);
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::inOrder()
 {
 	inOrder(root);
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::inOrder(TNode<DT>* current)
 {
 	if(current != NULL)
 	{
-		if(current->left != NULL)
-			inOrder(current->left);
-		if(current != NULL)
-			cout << current->data << ", ";
-		if(current->right != NULL)
-			inOrder(current->right);
+		inOrder(current->left);
+		cout << current->data << ", ";
+		inOrder(current->right);
 	}
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::preOrder()
 {
 	preOrder(root);
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::preOrder(TNode<DT>* current)
 {
 	if(current != NULL)
 	{
-		if(current != NULL)
-			cout << current->data << ", ";
-		if(current->left != NULL)
-			preOrder(current->left);
-		if(current->right != NULL)
-			preOrder(current->right);
+		cout << current->data << ", ";
+		preOrder(current->left);
+		preOrder(current->right);
 	}
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::postOrder()
 {
 	postOrder(root);
 }
 
-template <class DT>
+	template <class DT>
 void BST<DT>::postOrder(TNode<DT>* current)
 {
 	if(current != NULL)
 	{
-		if(current->left != NULL)
-			postOrder(current->left);
-		if(current->right != NULL)
-			postOrder(current->right);
-		if(current != NULL)
-			cout << current->data << ", ";
+		postOrder(current->left);
+		postOrder(current->right);
+		cout << current->data << ", ";
 	}
 }
 
+	template <class DT>
+DT* BST<DT>::bstToArray(DT* array, int index, TNode<DT>* current)
+{
+
+//	if(current != NULL)
+//	{
+//		array[index] = current;
+//		bstToArray(array, index/2, current->left);
+//		bstToArray(array, index + index/2, current->right);
+//	}
+}
