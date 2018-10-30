@@ -12,7 +12,14 @@ TNode<DT>::TNode(DT* d)
 	right = NULL;
 	data = *d;
 }
-
+template <class DT>
+TNode<DT>::TNode(DT d)
+{
+	parent = NULL;
+	left = NULL;
+	right = NULL;
+	data = d;
+}
 template <class DT>
 BST<DT>::BST()
 {
@@ -54,7 +61,12 @@ bool BST<DT>::bstInsert()
 {
 	return bstInsert(createNode());
 }
-
+template <class DT>
+bool BST<DT>::bstInsert(DT data)
+{
+	TNode<DT>* node = new TNode<DT>(data);
+	return bstInsert(node);
+}
 template <class DT>
 bool BST<DT>::bstInsert(TNode<DT>* newNode)
 //returns true if the node was added successfully, false if it couldn't add it
@@ -67,36 +79,27 @@ bool BST<DT>::bstInsert(TNode<DT>* newNode)
 	else
 	{
 		TNode<DT>* current = root;
-		while(current != NULL)
+		TNode<DT>* prev = root;
+		while(current)
 		{
-			if(newNode->data < current->data)
-			{
-				if(current->left == NULL)
-				{
-					current->left = newNode;
-					newNode->parent = current;
-					return true;
-				}else
-					current = current->left;
-			}
+			prev = current;
+			if(newNode->data <= current->data)
+				current = current->left;
 			if(newNode->data > current->data)
-			{
-				if(current->right == NULL)
-				{
-					current->right = newNode;
-					newNode->parent = current;
-					return true;
-				}else
-					current = current->right;
-			}
-			else if(newNode->data == current->data)
-			{
-				cout << "Node is already in the BST";
-				return false;
-			}
+				current = current->right;
 		}//end while
+		if(newNode->data <= prev->data)
+			prev->left = newNode;
+		else if(newNode->data > prev->data)
+			prev->right = newNode;
+		newNode->parent = prev;
 	}
 	return false;//the function should never get to this statement, only if theres an error
+}
+template <class DT>
+void BST<DT>::bstDelete(DT data)
+{
+	bstDelete(bstSearch(data));
 }
 template <class DT>
 void BST<DT>::bstDelete(TNode<DT>* node)
@@ -115,6 +118,7 @@ void BST<DT>::bstDelete(TNode<DT>* node)
 			replace = del->left;
 		else
 			replace = del->right;
+		//TRANSPLANT
 		if(replace != NULL)
 			replace->parent = del->parent;
 		if(del->parent == NULL)
@@ -123,8 +127,11 @@ void BST<DT>::bstDelete(TNode<DT>* node)
 			del->parent->left = replace;
 		else
 			del->parent->right = replace; 
+		//end TRANSPLANT
+		
+		//if the node to be deleted is a leaf del will = replace
 		if( del != replace)
-		node->data = del->data;
+			node->data = del->data;
 		delete del;
 	}
 }
@@ -140,7 +147,7 @@ TNode<DT>* BST<DT>::bstSearch(DT data)
 			//cout << "found" <<endl;
 			return current;
 		}
-		if(data < current->data)// && current->left != NULL)
+		if(data <= current->data)// && current->left != NULL)
 			current = current->left;
 		else if(data > current->data)// && current->right != NULL)
 			current = current->right;
@@ -284,5 +291,3 @@ void BST<DT>::postOrder(TNode<DT>* current)
 	}
 }
 
-//class template BST<int>;
-//class template BST<Student>;

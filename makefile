@@ -1,16 +1,10 @@
-all: bst clean
+all: bst timeBST clean
 
-bst: BSTEngine.o BST.o Student.o
-	g++ -o bst BST.o Student.o
+bst: 
+	g++ -std=c++11 manualInstantiation.cpp -o bst -g
 
-BSTEngine.o: BSTEngine.cpp
-	g++ -c BSTEngine.cpp
-
-BST.o: BST.cpp
-	g++ -c BST.cpp
-
-Student.o:
-	g++ -c Student.cpp
+timeBST: 
+	g++ -std=c++11 timeInstantiation.cpp -o timeBST -g -I../c-Heap -I../matplotlibcpp
 
 clean:
 	rm -rf *o

@@ -36,10 +36,10 @@ private:
 	TNode<DT>* predecessor();
 	TNode<DT>* predecessor(TNode<DT>*);
 
+	void transplant(TNode<DT>*, TNode<DT>*);
+
 	TNode<DT>* createNode();
 
-	void cleanNodes();
-	void cleanNodes(TNode<DT>* x);
 public:
 	BST();
 	~BST();
@@ -57,8 +57,12 @@ public:
 	bool bstInsert(DT);
 	bool bstInsert(TNode<DT>*);
 
+	TNode<DT>* bstSearch(DT data);
+	
+	void bstDelete(DT);
 	void bstDelete(TNode<DT>*);
 
-	TNode<DT>* bstSearch(DT data);
+	void cleanNodes();
+	void cleanNodes(TNode<DT>* x);
 };
 #endif
